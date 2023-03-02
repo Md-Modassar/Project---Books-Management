@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const reviwesModel = require('../models/reviwesModel')
 const bookModel = require('../models/booksModel');
 const userModel = require('../models/userModel');
+const { findById } = require('../models/userModel');
+const { create, findOne } = require('../models/reviwesModel');
 const objectId = mongoose.Types.ObjectId;
 
 
@@ -23,12 +25,12 @@ exports.createReview = async (req, res) => {
     data.bookId = bookid
 
 
-    if (!rating) return res.status(400).send({ status: false, message: "provied a rating" })
-
-    
     if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "body is empty" })
 
 
+    if (!rating) return res.status(400).send({ status: false, message: "provied a rating" })
+
+  
     let findBook = await bookModel.findOne({ _id: bookid, isDeleted: false })
     if (!findBook) return res.status(404).send({ status: false, message: "book not exits mongodb" })
 
@@ -135,6 +137,9 @@ exports.deleterive = async function (req, res) {
     return res.status(500).send({ status: false, message: err.message })
   }
 }
+
+
+
 
 
 

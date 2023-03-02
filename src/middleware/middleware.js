@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const { send } = require('process')
 const booksModel = require('../models/booksModel')
 const userModel = require('../models/userModel')
 
@@ -9,7 +10,7 @@ const userModel = require('../models/userModel')
 exports.authentication = async (req, res, next) => {
   try {
     let headersValue = req.headers['x-api-key']
-    if (!headersValue) return res.status(400).send({ status: false, message: "provied  token value" })
+    if (!headersValue) return res.status(400).send({ status: false, message: "Please set x-api-key header" })
 
     jwt.verify(headersValue, "this is 3rd project form lithium batch", (err, decoeded) => {
          if (err) return res.status(401).send({ status: false, message: err.message })
@@ -22,8 +23,6 @@ exports.authentication = async (req, res, next) => {
     return res.status(500).send({ status: false, message: err.message })
   }
 }
-
-
 
 
 exports.authorization = async (req, res, next) => {
@@ -57,3 +56,6 @@ exports.authorization = async (req, res, next) => {
     return res.status(500).send({ status: false, message: err.message })
   }
 }
+
+
+

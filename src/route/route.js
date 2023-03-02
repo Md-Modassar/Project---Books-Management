@@ -7,6 +7,8 @@ const reviwesController = require("../controller/reviewscontroller")
 const middleware = require("../middleware/middleware")
 
 
+
+
 // ================= aws =====================================//
 
 const aws= require("aws-sdk")
@@ -51,9 +53,7 @@ let uploadFile= async ( file) =>{
         return resolve(data.Location)
     })
 
-    // let data= await s3.upload( uploadParams)
-    // if( data) return data.Location
-    // else return "there is an error"
+   
 
    })
 }
@@ -62,10 +62,11 @@ router.post("/write-file-aws", async function(req, res){
 
     try{
         let files= req.files
+        console.log("++++++++",files)
         if(files && files.length>0){
-            //upload to s3 and get the uploaded link
-            // res.send the link back to frontend/postman
+        
             let uploadedFileURL= await uploadFile( files[0] )
+            console.log(uploadedFileURL)
             res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
         }
         else{
@@ -104,6 +105,7 @@ router.delete("/books/:bookId",middleware.authentication,middleware.authorizatio
 router.post("/books/:bookId/review",reviwesController.createReview)
 router.put("/books/:bookId/review/:reviewId" ,reviwesController.updateReview)
 router.delete("/books/:bookId/review/:reviewId" ,reviwesController.deleterive)
+
 
 
 
